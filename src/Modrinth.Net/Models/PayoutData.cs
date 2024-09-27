@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 using Modrinth.Models.Enums;
 
 #pragma warning disable CS8618
@@ -17,18 +17,18 @@ public class PayoutData
     /// <summary>
     ///     The wallet that the user has selected
     /// </summary>
-    [JsonPropertyName("payout_wallet")]
+    [JsonProperty("payout_wallet")]
     public PayoutWallet PayoutWallet { get; set; }
 
     /// <summary>
     ///     The type of the user's wallet
     /// </summary>
-    [JsonPropertyName("payout_wallet_type")]
+    [JsonProperty("payout_wallet_type")]
     public PayoutWalletType PayoutWalletType { get; set; }
 
     /// <summary>
     ///     The user's payout address
     /// </summary>
-    [JsonPropertyName("payout_address")]
+    [JsonProperty("payout_address")]
     public string PayoutAddress { get; set; }
 }

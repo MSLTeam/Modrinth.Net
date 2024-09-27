@@ -1,9 +1,13 @@
+#nullable disable
+using System.Drawing;
 using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Net.Http;
 using Modrinth.Exceptions;
 using Modrinth.JsonConverters;
 using Modrinth.Models.Errors;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Modrinth.Http;
 
@@ -12,23 +16,39 @@ public class Requester : IRequester
 {
     private readonly ModrinthClientConfig _config;
 
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
     {
-        PropertyNameCaseInsensitive = true,
-        Converters =
+        ContractResolver = new DefaultContractResolver
         {
-            new ColorConverter(),
-            new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.SnakeCaseLower)
+            NamingStrategy = new SnakeCaseNamingStrategy()
         },
-        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+        Converters = new List<JsonConverter>
+    {
+        new ColorConverter(),
+        new StringEnumConverter(new SnakeCaseNamingStrategy())
+    }
     };
+    /// <inheritdoc />
+    public class ColorConverter : JsonConverter<Color>
+    {/// <inheritdoc />
+        public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
+        {
+            writer.WriteValue(ColorTranslator.ToHtml(value));
+        }
+        /// <inheritdoc />
+        public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            var colorString = (string)reader.Value;
+            return ColorTranslator.FromHtml(colorString);
+        }
+    }
 
     /// <summary>
     ///     Creates a new <see cref="Requester" /> with the specified <see cref="ModrinthClientConfig" />
     /// </summary>
     /// <param name="config"> The config to use </param>
     /// <param name="httpClient"> The <see cref="HttpClient" /> to use, if null a new one will be created </param>
-    public Requester(ModrinthClientConfig config, HttpClient? httpClient = null)
+    public Requester(ModrinthClientConfig config, HttpClient httpClient = null)
     {
         _config = config;
         HttpClient = httpClient ?? new HttpClient();
@@ -73,20 +93,23 @@ public class Requester : IRequester
 
         try
         {
-            var deserializedT = await JsonSerializer
-                .DeserializeAsync<T>(await response.Content.ReadAsStreamAsync(cancellationToken),
-                    _jsonSerializerOptions,
-                    cancellationToken)
-                .ConfigureAwait(false) ?? throw new ModrinthApiException("Response could not be deserialized",
-                response);
+            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+            using (var streamReader = new StreamReader(stream))
+            using (var jsonReader = new JsonTextReader(streamReader))
+            {
+                var serializer = JsonSerializer.Create(_jsonSerializerSettings);
+                var deserializedT = serializer.Deserialize<T>(jsonReader) ?? throw new ModrinthApiException("Response could not be deserialized", response);
 
-            return deserializedT;
+                return deserializedT;
+            }
         }
         catch (JsonException e)
         {
-            throw new ModrinthApiException($"Response could not be deserialize for Path {e.Path} | URL {request.RequestUri} | Response {response.StatusCode} | Data {await response.Content.ReadAsStringAsync(cancellationToken)}", response, innerException: e);
+            throw new ModrinthApiException($"Response could not be deserialized for Path {e.Message} | URL {request.RequestUri} | Response {response.StatusCode} | Data {await response.Content.ReadAsStringAsync()}", response, innerException: e);
         }
+
     }
+
 
 
     /// <summary>
@@ -117,7 +140,7 @@ public class Requester : IRequester
 
             if (response.IsSuccessStatusCode) return response;
 
-            if (response.StatusCode == HttpStatusCode.TooManyRequests)
+            if ((int)response.StatusCode == 429)
             {
                 if (cancellationToken.IsCancellationRequested)
                     throw new OperationCanceledException(
@@ -144,21 +167,25 @@ public class Requester : IRequester
             }
 
             // Error handling
-            ResponseError? error = null;
+            ResponseError error = null;
             try
             {
-                error = await JsonSerializer.DeserializeAsync<ResponseError>(
-                        await response.Content.ReadAsStreamAsync(cancellationToken), _jsonSerializerOptions,
-                        cancellationToken)
-                    .ConfigureAwait(false);
+                using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                using (var streamReader = new StreamReader(stream))
+                using (var jsonReader = new JsonTextReader(streamReader))
+                {
+                    var serializer = JsonSerializer.Create(_jsonSerializerSettings);
+                    error = serializer.Deserialize<ResponseError>(jsonReader);
+                }
             }
             catch (JsonException)
             {
                 // Ignore
             }
 
+
             var message = "An error occurred while communicating with Modrinth API (HTTP " +
-                          $"{(int) response.StatusCode} {response.StatusCode})";
+                          $"{(int)response.StatusCode} {response.StatusCode})";
             if (error != null) message += $": {error.Error}: {error.Description}";
 
             // Add request information to the exception
@@ -166,7 +193,7 @@ public class Requester : IRequester
 
             throw new ModrinthApiException(message, response, error);
         }
-    }
+    } 
 
     /// <inheritdoc />
     public void Dispose()
@@ -181,8 +208,14 @@ public class Requester : IRequester
         newRequest.Content = request.Content;
         newRequest.Method = request.Method;
         newRequest.Version = request.Version;
-        foreach (var header in request.Headers) newRequest.Headers.Add(header.Key, header.Value);
-        newRequest.VersionPolicy = request.VersionPolicy;
+        foreach (var header in request.Headers)
+        {
+            newRequest.Headers.Add(header.Key, header.Value);
+        }
         return newRequest;
     }
+
 }
+
+
+

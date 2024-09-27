@@ -1,7 +1,8 @@
 ﻿using System.Text;
-using System.Text.Json;
+using System.Net.Http;
 using Modrinth.Http;
 using Modrinth.Models.Enums;
+using Newtonsoft.Json;
 
 namespace Modrinth.Endpoints.VersionFile;
 
@@ -66,7 +67,7 @@ public class VersionFileEndpoint : Endpoint, IVersionFileEndpoint
             algorithm = hashAlgorithm.ToString().ToLower()
         };
 
-        reqMsg.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        reqMsg.Content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
         return await Requester.GetJsonAsync<IDictionary<string, Models.Version>>(reqMsg, cancellationToken)
             .ConfigureAwait(false);
@@ -95,7 +96,7 @@ public class VersionFileEndpoint : Endpoint, IVersionFileEndpoint
             game_versions = gameVersions
         };
 
-        reqMsg.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        reqMsg.Content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
         return await Requester.GetJsonAsync<Models.Version>(reqMsg, cancellationToken).ConfigureAwait(false);
     }
@@ -118,7 +119,7 @@ public class VersionFileEndpoint : Endpoint, IVersionFileEndpoint
             game_versions = gameVersions
         };
 
-        reqMsg.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        reqMsg.Content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
         return await Requester.GetJsonAsync<IDictionary<string, Models.Version>>(reqMsg, cancellationToken)
             .ConfigureAwait(false);

@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -14,12 +15,11 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageVersion>3.4.5</PackageVersion>
         <Version>$(PackageVersion)</Version>
-        <TargetFramework>net8.0</TargetFramework>
         <RootNamespace>Modrinth</RootNamespace>
         <RepositoryType>git</RepositoryType>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <LangVersion>12</LangVersion>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -32,7 +32,6 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
-
     <ItemGroup>
         <None Include="..\..\README.md">
             <Pack>True</Pack>
@@ -40,5 +39,12 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Net.Http" />
+    </ItemGroup>
 
 </Project>

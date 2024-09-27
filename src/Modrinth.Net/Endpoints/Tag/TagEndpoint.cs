@@ -1,5 +1,6 @@
 ﻿using Modrinth.Http;
 using Modrinth.Models.Tags;
+using System.Net.Http;
 
 namespace Modrinth.Endpoints.Tag;
 

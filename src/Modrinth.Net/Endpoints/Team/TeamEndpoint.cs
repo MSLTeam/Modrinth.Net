@@ -1,9 +1,10 @@
 ﻿using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 using Modrinth.Extensions;
 using Modrinth.Http;
 using Modrinth.Models;
 using Modrinth.Models.Enums;
+using System.Net.Http;
 
 namespace Modrinth.Endpoints.Team;
 
@@ -67,7 +68,7 @@ public class TeamEndpoint : Endpoint, ITeamEndpoint
             user_id = userId
         };
 
-        reqMsg.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        reqMsg.Content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
         await Requester.SendAsync(reqMsg, cancellationToken).ConfigureAwait(false);
     }
@@ -105,7 +106,7 @@ public class TeamEndpoint : Endpoint, ITeamEndpoint
             user_id = userId
         };
 
-        reqMsg.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        reqMsg.Content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
         await Requester.SendAsync(reqMsg, cancellationToken).ConfigureAwait(false);
     }
@@ -116,7 +117,7 @@ public class TeamEndpoint : Endpoint, ITeamEndpoint
         int ordering, CancellationToken cancellationToken = default)
     {
         var reqMsg = new HttpRequestMessage();
-        reqMsg.Method = HttpMethod.Patch;
+        reqMsg.Method = new HttpMethod("PATCH");
         reqMsg.RequestUri = new Uri(TeamsPathSegment + '/' + teamId + '/' + "members" + '/' + userId, UriKind.Relative);
 
         var requestBody = new
@@ -127,7 +128,7 @@ public class TeamEndpoint : Endpoint, ITeamEndpoint
             ordering
         };
 
-        reqMsg.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        reqMsg.Content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
         await Requester.SendAsync(reqMsg, cancellationToken).ConfigureAwait(false);
     }

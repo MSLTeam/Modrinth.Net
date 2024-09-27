@@ -72,8 +72,9 @@ public class FacetCollection : ICollection<Facet[]>
         // Serialize the facets into a Javascript array
         var serializedFacets = _facets.Select(
             facets =>
-                $"[{string.Join(',', facets.Select(facet => $"\"{facet}\""))}]");
+                $"[{string.Join(",", facets.Select(facet => $"\"{facet}\""))}]");
 
-        return $"[{string.Join(',', serializedFacets)}]";
+        return $"[{string.Join(",", serializedFacets)}]";
     }
+
 }

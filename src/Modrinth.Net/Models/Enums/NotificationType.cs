@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Modrinth.Models.Enums;
 
@@ -10,21 +10,21 @@ public enum NotificationType
     /// <summary>
     ///     The project was updates
     /// </summary>
-    [JsonPropertyName("project_update")] ProjectUpdate,
+    [JsonProperty("project_update")] ProjectUpdate,
 
     /// <summary>
     ///     A team invite received
     /// </summary>
-    [JsonPropertyName("team_invite")] TeamInvite,
+    [JsonProperty("team_invite")] TeamInvite,
 
     /// <summary>
     ///     Project status update
     /// </summary>
-    [JsonPropertyName("status_change")] StatusChange,
+    [JsonProperty("status_change")] StatusChange,
 
     /// <summary>
     ///     Moderator message
     /// </summary>
-    [JsonPropertyName("moderator_message")]
+    [JsonProperty("moderator_message")]
     ModeratorMessage
 }

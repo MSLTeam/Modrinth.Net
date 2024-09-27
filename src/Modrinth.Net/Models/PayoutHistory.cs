@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Modrinth.Models;
 
@@ -11,17 +11,17 @@ public class PayoutHistory
     ///     The all-time balance accrued by this user in USD
     /// </summary>
     /// <returns></returns>
-    [JsonPropertyName("all_time")]
-    public string? AllTime { get; init; }
+    [JsonProperty("all_time")]
+    public string? AllTime { get; set; }
 
     /// <summary>
     ///     The amount in USD made by the user in the previous 30 days
     /// </summary>
-    [JsonPropertyName("last_month")]
-    public string? LastMonth { get; init; }
+    [JsonProperty("last_month")]
+    public string? LastMonth { get; set; }
 
     /// <summary>
     ///     A history of all of the user's past transactions
     /// </summary>
-    public UserPayoutHistoryEntry[] Payouts { get; init; } = null!;
+    public UserPayoutHistoryEntry[] Payouts { get; set; } = null!;
 }

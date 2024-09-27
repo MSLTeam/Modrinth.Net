@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 using Modrinth.Models.Enums;
 
 #pragma warning disable CS8618
@@ -17,7 +17,7 @@ public class Notification
     /// <summary>
     ///     The ID of the user who received the notification
     /// </summary>
-    [JsonPropertyName("user_id")]
+    [JsonProperty("user_id")]
     public string UserId { get; set; }
 
     /// <summary>

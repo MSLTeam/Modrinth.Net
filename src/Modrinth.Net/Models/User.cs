@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CS8618
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Modrinth.Helpers;
 using Modrinth.Models.Enums;
 
@@ -46,7 +46,7 @@ public class User
     /// <summary>
     ///     The user's avatar url
     /// </summary>
-    [JsonPropertyName("avatar_url")]
+    [JsonProperty("avatar_url")]
     public string AvatarUrl { get; set; }
 
     /// <summary>
@@ -70,25 +70,25 @@ public class User
     /// <summary>
     ///     A list of authentication providers you have signed up for (only displayed if requesting your own account)
     /// </summary>
-    [JsonPropertyName("auth_providers")]
+    [JsonProperty("auth_providers")]
     public string[]? AuthProviders { get; set; }
 
     /// <summary>
     ///     Whether your email is verified (only displayed if requesting your own account)
     /// </summary>
-    [JsonPropertyName("email_verified")]
+    [JsonProperty("email_verified")]
     public bool? EmailVerified { get; set; }
 
     /// <summary>
     ///     Whether you have a password associated with your account (only displayed if requesting your own account)
     /// </summary>
-    [JsonPropertyName("has_password")]
+    [JsonProperty("has_password")]
     public bool? HasPassword { get; set; }
 
     /// <summary>
     ///     Whether you have TOTP two-factor authentication connected to your account (only displayed if requesting your own
     ///     account)
     /// </summary>
-    [JsonPropertyName("has_totp")]
+    [JsonProperty("has_totp")]
     public bool? HasTotp { get; set; }
 }

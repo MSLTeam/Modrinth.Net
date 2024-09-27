@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CS8618
 using System.Drawing;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Modrinth.Helpers;
 using Modrinth.Models.Enums;
 using Modrinth.Models.Enums.Project;
@@ -40,19 +40,19 @@ public class SearchResult
     /// <summary>
     ///     The client side support of the project
     /// </summary>
-    [JsonPropertyName("client_side")]
+    [JsonProperty("client_side")]
     public Side? ClientSide { get; set; }
 
     /// <summary>
     ///     The server side support of the project
     /// </summary>
-    [JsonPropertyName("server_side")]
+    [JsonProperty("server_side")]
     public Side? ServerSide { get; set; }
 
     /// <summary>
     ///     The project type of the project
     /// </summary>
-    [JsonPropertyName("project_type")]
+    [JsonProperty("project_type")]
     public ProjectType ProjectType { get; set; }
 
     /// <summary>
@@ -63,13 +63,13 @@ public class SearchResult
     /// <summary>
     ///     The URL of the project's icon
     /// </summary>
-    [JsonPropertyName("icon_url")]
+    [JsonProperty("icon_url")]
     public string? IconUrl { get; set; }
 
     /// <summary>
     ///     The ID of the project
     /// </summary>
-    [JsonPropertyName("project_id")]
+    [JsonProperty("project_id")]
     public string ProjectId { get; set; }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class SearchResult
     /// <summary>
     ///     A list of the categories that the project has which are not secondary
     /// </summary>
-    [JsonPropertyName("display_categories")]
+    [JsonProperty("display_categories")]
     public string[] DisplayCategories { get; set; }
 
     /// <summary>
@@ -91,19 +91,19 @@ public class SearchResult
     /// <summary>
     ///     The date the project was last modified
     /// </summary>
-    [JsonPropertyName("date_modified")]
+    [JsonProperty("date_modified")]
     public DateTime DateModified { get; set; }
 
     /// <summary>
     ///     The total number of users following the project
     /// </summary>
-    [JsonPropertyName("follows")]
+    [JsonProperty("follows")]
     public int Followers { get; set; }
 
     /// <summary>
     ///     The latest version of minecraft that this project supports
     /// </summary>
-    [JsonPropertyName("latest_version")]
+    [JsonProperty("latest_version")]
     public string? LatestVersion { get; set; }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class SearchResult
     /// <summary>
     ///     The featured gallery image of the project
     /// </summary>
-    [JsonPropertyName("featured_gallery")]
+    [JsonProperty("featured_gallery")]
     public string? FeaturedGallery { get; set; }
 
     /// <summary>

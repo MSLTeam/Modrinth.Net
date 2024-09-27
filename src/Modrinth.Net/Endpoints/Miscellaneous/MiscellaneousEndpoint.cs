@@ -1,5 +1,5 @@
 ﻿using Modrinth.Http;
-
+using System.Net.Http;
 namespace Modrinth.Endpoints.Miscellaneous;
 
 /// <inheritdoc cref="Modrinth.Endpoints.Miscellaneous.IMiscellaneousEndpoint" />

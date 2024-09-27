@@ -1,58 +1,70 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿#nullable disable
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 
-namespace Modrinth.JsonConverters;
-
-/// <inheritdoc />
-public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum : struct, Enum
+namespace Modrinth.JsonConverters
 {
-    // Credit to:
-    // https://github.com/dotnet/runtime/issues/31081#issuecomment-848697673
-
-    private readonly Dictionary<TEnum, string> _enumToString = new();
-    private readonly Dictionary<string, TEnum> _stringToEnum = new();
-
     /// <inheritdoc />
-    public JsonStringEnumConverterEx()
+    public class JsonStringEnumConverterEx<TEnum> : JsonConverter where TEnum : struct, Enum
     {
-        var type = typeof(TEnum);
-        var values = Enum.GetValues<TEnum>();
+        private readonly Dictionary<TEnum, string> _enumToString = new();
+        private readonly Dictionary<string, TEnum> _stringToEnum = new();
 
-        foreach (var value in values)
+        /// <inheritdoc />
+        public JsonStringEnumConverterEx()
         {
-            var enumMember = type.GetMember(value.ToString())[0];
-            var attr = enumMember.GetCustomAttributes(typeof(EnumMemberAttribute), false)
-                .Cast<EnumMemberAttribute>()
-                .FirstOrDefault();
+            var type = typeof(TEnum);
+            var values = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
 
-            _stringToEnum.Add(value.ToString(), value);
+            foreach (var value in values)
+            {
+                var enumMember = type.GetMember(value.ToString())[0];
+                var attr = enumMember.GetCustomAttributes(typeof(EnumMemberAttribute), false)
+                    .Cast<EnumMemberAttribute>()
+                    .FirstOrDefault();
 
-            if (attr?.Value != null)
-            {
-                _enumToString.Add(value, attr.Value);
-                _stringToEnum.Add(attr.Value, value);
-            }
-            else
-            {
-                _enumToString.Add(value, value.ToString());
+                _stringToEnum.Add(value.ToString(), value);
+
+                if (attr?.Value != null)
+                {
+                    _enumToString.Add(value, attr.Value);
+                    _stringToEnum.Add(attr.Value, value);
+                }
+                else
+                {
+                    _enumToString.Add(value, value.ToString());
+                }
             }
         }
-    }
 
-    /// <inheritdoc />
-    public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        var stringValue = reader.GetString();
+        /// <inheritdoc />
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var enumValue = (TEnum)value;
+            writer.WriteValue(_enumToString[enumValue]);
+        }
 
-        if (_stringToEnum.TryGetValue(stringValue!, out var enumValue)) return enumValue;
+        /// <inheritdoc />
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var stringValue = reader.Value.ToString();
 
-        return default;
-    }
+            if (_stringToEnum.TryGetValue(stringValue, out var enumValue))
+            {
+                return enumValue;
+            }
 
-    /// <inheritdoc />
-    public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(_enumToString[value]);
+            return default(TEnum);
+        }
+        /// <inheritdoc/>
+
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(TEnum);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 using Modrinth.Models.Enums.Project;
 
 #pragma warning disable CS8618
@@ -22,6 +22,6 @@ public class Loader
     /// <summary>
     ///     The project types that this loader is applicable to
     /// </summary>
-    [JsonPropertyName("supported_project_types")]
+    [JsonProperty("supported_project_types")]
     public ProjectType[] SupportedProjectTypes { get; set; }
 }

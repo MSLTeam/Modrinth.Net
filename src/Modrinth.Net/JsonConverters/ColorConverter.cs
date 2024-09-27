@@ -1,32 +1,45 @@
-﻿using System.Drawing;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
-namespace Modrinth.JsonConverters;
-
-/// <inheritdoc />
-public class ColorConverter : JsonConverter<Color?>
+namespace Modrinth.JsonConverters
 {
     /// <inheritdoc />
-    public override Color? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public class ColorConverter : JsonConverter<Color?>
     {
-        switch (reader.TokenType)
+        /// <inheritdoc />
+        public override void WriteJson(JsonWriter writer, Color? value, JsonSerializer serializer)
         {
-            case JsonTokenType.Number:
+            if (value.HasValue)
             {
-                var intValue = reader.GetInt32();
+                writer.WriteValue(value.Value.ToArgb());
+            }
+            else
+            {
+                writer.WriteNull();
+            }
+        }
+
+        /// <inheritdoc />
+        public override Color? ReadJson(JsonReader reader, Type objectType, Color? existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Integer)
+            {
+                var intValue = Convert.ToInt32(reader.Value);
                 return Color.FromArgb(intValue);
             }
-            case JsonTokenType.Null:
+            else if (reader.TokenType == JsonToken.Null)
+            {
                 return null;
-            default:
-                throw new JsonException("Unexpected token type: " + reader.TokenType);
+            }
+            else
+            {
+                throw new JsonSerializationException("Unexpected token type: " + reader.TokenType);
+            }
         }
-    }
 
-    /// <inheritdoc />
-    public override void Write(Utf8JsonWriter writer, Color? value, JsonSerializerOptions options)
-    {
-        throw new NotImplementedException();
     }
 }

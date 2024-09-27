@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CS8618
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Modrinth.Models.Enums;
 
 namespace Modrinth.Models;
@@ -17,7 +17,7 @@ public class TeamMember
     /// <summary>
     ///     The ID of the team this team member is a member of
     /// </summary>
-    [JsonPropertyName("team_id")]
+    [JsonProperty("team_id")]
     public string TeamId { get; set; }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class TeamMember
     ///     The split of payouts going to this user. The proportion of payouts they get is their split divided by the sum of
     ///     the splits of all members.
     /// </summary>
-    [JsonPropertyName("payouts_split")]
+    [JsonProperty("payouts_split")]
     public int? PayoutsSplit { get; set; }
 
     /// <summary>

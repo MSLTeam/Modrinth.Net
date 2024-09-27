@@ -1,3 +1,5 @@
+using System.Net.Http;
+
 namespace Modrinth.Http;
 
 /// <summary>

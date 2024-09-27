@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CS8618
 using System.Drawing;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Modrinth.Helpers;
 using Modrinth.Models.Enums;
 using Modrinth.Models.Enums.Project;
@@ -40,13 +40,13 @@ public class Project
     /// <summary>
     ///     The client side support of the project
     /// </summary>
-    [JsonPropertyName("client_side")]
+    [JsonProperty("client_side")]
     public Side ClientSide { get; set; }
 
     /// <summary>
     ///     The server side support of the project
     /// </summary>
-    [JsonPropertyName("server_side")]
+    [JsonProperty("server_side")]
     public Side ServerSide { get; set; }
 
     /// <summary>
@@ -57,37 +57,37 @@ public class Project
     /// <summary>
     ///     An optional link to where to submit bugs or issues with the project
     /// </summary>
-    [JsonPropertyName("issues_url")]
+    [JsonProperty("issues_url")]
     public string? IssuesUrl { get; set; }
 
     /// <summary>
     ///     An optional link to the source code of the project
     /// </summary>
-    [JsonPropertyName("source_url")]
+    [JsonProperty("source_url")]
     public string? SourceUrl { get; set; }
 
     /// <summary>
     ///     An optional link to the project's wiki page or other relevant information
     /// </summary>
-    [JsonPropertyName("wiki_url")]
+    [JsonProperty("wiki_url")]
     public string? WikiUrl { get; set; }
 
     /// <summary>
     ///     An optional invite link to the project's discord
     /// </summary>
-    [JsonPropertyName("discord_url")]
+    [JsonProperty("discord_url")]
     public string? DiscordUrl { get; set; }
 
     /// <summary>
     ///     A list of donation links for the project
     /// </summary>
-    [JsonPropertyName("donation_urls")]
+    [JsonProperty("donation_urls")]
     public DonationUrl[] DonationUrls { get; set; }
 
     /// <summary>
     ///     The project type of the project
     /// </summary>
-    [JsonPropertyName("project_type")]
+    [JsonProperty("project_type")]
     public ProjectType ProjectType { get; set; }
 
     /// <summary>
@@ -98,7 +98,7 @@ public class Project
     /// <summary>
     ///     The URL of the project's icon
     /// </summary>
-    [JsonPropertyName("icon_url")]
+    [JsonProperty("icon_url")]
     public string? IconUrl { get; set; }
 
     /// <summary>
@@ -115,7 +115,7 @@ public class Project
     ///     A message that a moderator sent regarding the project
     /// </summary>
     /// <deprecated> This property is deprecated and will be removed in a future version of the API. </deprecated>
-    [JsonPropertyName("moderator_message")]
+    [JsonProperty("moderator_message")]
     public ModeratorMessage? ModeratorMessage { get; set; }
 
     /// <summary>
@@ -166,7 +166,7 @@ public class Project
     /// <summary>
     ///     The featured gallery image of the project
     /// </summary>
-    [JsonPropertyName("featured_gallery")]
+    [JsonProperty("featured_gallery")]
     public string? FeaturedGallery { get; set; }
 
     /// <summary>
@@ -177,18 +177,18 @@ public class Project
     /// <summary>
     ///     The ID of the moderation thread associated with this project
     /// </summary>
-    [JsonPropertyName("thread_id")]
+    [JsonProperty("thread_id")]
     public string? ThreadId { get; set; }
 
     /// <summary>
     ///     A list of all of the game versions supported by the project
     /// </summary>
-    [JsonPropertyName("game_versions")]
+    [JsonProperty("game_versions")]
     public string[] GameVersions { get; set; }
 
     /// <summary>
     ///     A list of all of the loaders supported by the project
     /// </summary>
-    [JsonPropertyName("loaders")]
+    [JsonProperty("loaders")]
     public string[] Loaders { get; set; }
 }

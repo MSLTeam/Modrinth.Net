@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CS8618
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Modrinth.Models.Enums.Project;
 using Modrinth.Models.Enums.Version;
 
@@ -18,7 +18,7 @@ public class Version
     /// <summary>
     ///     The version number. Ideally will follow semantic versioning
     /// </summary>
-    [JsonPropertyName("version_number")]
+    [JsonProperty   ("version_number")]
     public string VersionNumber { get; set; }
 
     /// <summary>
@@ -34,13 +34,13 @@ public class Version
     /// <summary>
     ///     A list of versions of Minecraft that this version supports
     /// </summary>
-    [JsonPropertyName("game_versions")]
+    [JsonProperty("game_versions")]
     public string[] GameVersions { get; set; }
 
     /// <summary>
     ///     The release channel for this version
     /// </summary>
-    [JsonPropertyName("version_type")]
+    [JsonProperty("version_type")]
     public ProjectVersionType ProjectVersionType { get; set; }
 
     /// <summary>
@@ -61,19 +61,19 @@ public class Version
     /// <summary>
     ///     The ID of the project this version is for
     /// </summary>
-    [JsonPropertyName("project_id")]
+    [JsonProperty("project_id")]
     public string ProjectId { get; set; }
 
     /// <summary>
     ///     The ID of the author who published this version
     /// </summary>
-    [JsonPropertyName("author_id")]
+    [JsonProperty("author_id")]
     public string AuthorId { get; set; }
 
     /// <summary>
     ///     The time at which this version was created
     /// </summary>
-    [JsonPropertyName("date_published")]
+    [JsonProperty("date_published")]
     public DateTime DatePublished { get; set; }
 
     /// <summary>
@@ -94,6 +94,6 @@ public class Version
     /// <summary>
     ///     The requested status of this version, used when scheduling a version
     /// </summary>
-    [JsonPropertyName("requested_status")]
+    [JsonProperty("requested_status")]
     public VersionRequestedStatus? RequestedStatus { get; set; }
 }

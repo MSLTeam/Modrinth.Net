@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Modrinth.Models.Enums;
 
@@ -20,5 +20,5 @@ public enum PayoutWalletType
     /// <summary>
     ///     User handle
     /// </summary>
-    [JsonPropertyName("user_handle")] UserHandle
+    [JsonProperty("user_handle")] UserHandle
 }

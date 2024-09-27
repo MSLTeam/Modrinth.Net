@@ -7,6 +7,7 @@ using Modrinth.Endpoints.User;
 using Modrinth.Endpoints.Version;
 using Modrinth.Endpoints.VersionFile;
 using Modrinth.Http;
+using System.Net.Http;
 
 namespace Modrinth;
 
