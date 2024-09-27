@@ -1,4 +1,4 @@
-#nullable disable
+
 using System.Drawing;
 using System.Net;
 using System.Net.Http;
@@ -8,6 +8,7 @@ using Modrinth.Models.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using ColorConverter = Modrinth.JsonConverters.ColorConverter;
 
 namespace Modrinth.Http;
 
@@ -23,32 +24,19 @@ public class Requester : IRequester
             NamingStrategy = new SnakeCaseNamingStrategy()
         },
         Converters = new List<JsonConverter>
-    {
-        new ColorConverter(),
-        new StringEnumConverter(new SnakeCaseNamingStrategy())
-    }
+            {
+                new ColorConverter(),
+                new StringEnumConverter(new SnakeCaseNamingStrategy())
+            }
     };
-    /// <inheritdoc />
-    public class ColorConverter : JsonConverter<Color>
-    {/// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
-        {
-            writer.WriteValue(ColorTranslator.ToHtml(value));
-        }
-        /// <inheritdoc />
-        public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            var colorString = (string)reader.Value;
-            return ColorTranslator.FromHtml(colorString);
-        }
-    }
+
 
     /// <summary>
     ///     Creates a new <see cref="Requester" /> with the specified <see cref="ModrinthClientConfig" />
     /// </summary>
     /// <param name="config"> The config to use </param>
     /// <param name="httpClient"> The <see cref="HttpClient" /> to use, if null a new one will be created </param>
-    public Requester(ModrinthClientConfig config, HttpClient httpClient = null)
+    public Requester(ModrinthClientConfig config, HttpClient? httpClient = null)
     {
         _config = config;
         HttpClient = httpClient ?? new HttpClient();
@@ -93,7 +81,7 @@ public class Requester : IRequester
 
         try
         {
-            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+            using (var stream = await response.Content.ReadAsStreamAsync())
             using (var streamReader = new StreamReader(stream))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
@@ -105,9 +93,8 @@ public class Requester : IRequester
         }
         catch (JsonException e)
         {
-            throw new ModrinthApiException($"Response could not be deserialized for Path {e.Message} | URL {request.RequestUri} | Response {response.StatusCode} | Data {await response.Content.ReadAsStringAsync()}", response, innerException: e);
+            throw new ModrinthApiException($"Response could not be deserialize for Path {e.Message} | URL {request.RequestUri} | Response {response.StatusCode} | Data {await response.Content.ReadAsStringAsync()}", response, innerException: e);
         }
-
     }
 
 
@@ -167,7 +154,7 @@ public class Requester : IRequester
             }
 
             // Error handling
-            ResponseError error = null;
+            ResponseError error = "";
             try
             {
                 using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
@@ -175,7 +162,7 @@ public class Requester : IRequester
                 using (var jsonReader = new JsonTextReader(streamReader))
                 {
                     var serializer = JsonSerializer.Create(_jsonSerializerSettings);
-                    error = serializer.Deserialize<ResponseError>(jsonReader);
+                    error = ""+serializer.Deserialize<ResponseError>(jsonReader);
                 }
             }
             catch (JsonException)

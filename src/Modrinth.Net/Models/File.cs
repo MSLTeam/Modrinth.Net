@@ -24,6 +24,7 @@ public class File
     /// <summary>
     ///     The name of the file
     /// </summary>
+    [JsonProperty("filename")]
     public string FileName { get; set; }
 
     /// <summary>

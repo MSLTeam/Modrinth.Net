@@ -51,7 +51,17 @@ namespace Modrinth.JsonConverters
         /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.Value == null)
+            {
+                return default(TEnum);
+            }
+
             var stringValue = reader.Value.ToString();
+
+            if (_stringToEnum == null)
+            {
+                throw new InvalidOperationException("_stringToEnum dictionary is not initialized.");
+            }
 
             if (_stringToEnum.TryGetValue(stringValue, out var enumValue))
             {
@@ -60,6 +70,7 @@ namespace Modrinth.JsonConverters
 
             return default(TEnum);
         }
+
         /// <inheritdoc/>
 
         public override bool CanConvert(Type objectType)
