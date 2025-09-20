@@ -1,11 +1,15 @@
-# Modrinth.Net
+# Modrinth.NetFramework
 
 [![GitHub](https://img.shields.io/github/license/Zechiax/Modrinth.Net?style=for-the-badge)](https://github.com/Zechiax/Modrinth.Net)
-[![Nuget](https://img.shields.io/nuget/v/Modrinth.Net?style=for-the-badge)](https://www.nuget.org/packages/Modrinth.Net)
-[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Modrinth.Net?label=NuGet%20Pre-release&style=for-the-badge)](https://www.nuget.org/packages/Modrinth.Net)
+[![Nuget](https://img.shields.io/nuget/v/Modrinth.NetFrameWork?style=for-the-badge)](https://www.nuget.org/packages/Modrinth.NetFrameWork)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Modrinth.NetFrameWork?label=NuGet%20Pre-release&style=for-the-badge)](https://www.nuget.org/packages/Modrinth.NetFrameWork)
 [![Modrinth API](https://img.shields.io/badge/Modrinth%20API-v2.7.0-449C59?style=for-the-badge)](https://docs.modrinth.com/api/)
 
 C# Wrapper for the [Modrinth API](https://docs.modrinth.com/)
+
+Original project: [Zechiax/Modrinth.Net: A Modrinth API wrapper for C#](https://github.com/Zechiax/Modrinth.Net)
+
+This project has reduced the dependency of the original project from .NET 8.0 to .NET Framework 4.7.2
 
 - For list of supported endpoints,
   see [List of endpoints and their support in this library](#list-of-endpoints-and-their-support-in-this-library)
@@ -17,11 +21,11 @@ C# Wrapper for the [Modrinth API](https://docs.modrinth.com/)
     - Retry count is configurable
 - No dependencies
 - Fully documented
-- Support for .NET 8.0 and newer
+- Support for .NET Framework 4.7.2 and newer
 
 ## Usage
 
-- Install the [NuGet package](https://www.nuget.org/packages/Modrinth.Net)
+- Install the [NuGet package](https://www.nuget.org/packages/Modrinth.NetFramework)
 
 ```csharp
 using Modrinth;

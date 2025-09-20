@@ -6,10 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>An asynchronous Modrinth API wrapper</Description>
     <RepositoryUrl>https://github.com/MSLTeam/Modrinth.Net.git</RepositoryUrl>
     <PackageTags>modrinth;api;labrinth</PackageTags>
-    <Authors>Zechiax</Authors>
     <PackageReleaseNotes>https://github.com/MSLTeam/Modrinth.Net/releases</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -20,6 +18,9 @@
     <RepositoryType>git</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageId>Modrinth.NetFramework</PackageId> 
+    <Authors>Zechiax, luluxiaoyu</Authors>
+    <Description>一个用于 Modrinth API 的异步 C# 封装库，适配了 .NET Framework 4.7.2。</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
