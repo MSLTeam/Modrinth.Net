@@ -1,5 +1,6 @@
 ﻿using Modrinth.Http;
 using Modrinth.Models;
+using System.Net.Http;
 
 namespace Modrinth.Endpoints.Notifications;
 

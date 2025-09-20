@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Modrinth.Exceptions;
@@ -78,7 +79,7 @@ public class Requester : IRequester
         try
         {
             var deserializedT = await JsonSerializer
-                .DeserializeAsync<T>(await response.Content.ReadAsStreamAsync(cancellationToken),
+                .DeserializeAsync<T>(await response.Content.ReadAsStreamAsync(),
                     _jsonSerializerOptions,
                     cancellationToken)
                 .ConfigureAwait(false) ?? throw new ModrinthApiException("Response could not be deserialized",
@@ -89,7 +90,7 @@ public class Requester : IRequester
         catch (JsonException e)
         {
             throw new ModrinthApiException(
-                $"Response could not be deserialize for Path {e.Path} | URL {request.RequestUri} | Response {response.StatusCode} | Data {await response.Content.ReadAsStringAsync(cancellationToken)}",
+                $"Response could not be deserialize for Path {e.Path} | URL {request.RequestUri} | Response {response.StatusCode} | Data {await response.Content.ReadAsStringAsync()}",
                 response, innerException: e);
         }
     }
@@ -130,7 +131,7 @@ public class Requester : IRequester
                 if (response.IsSuccessStatusCode) return response;
 
                 // Handle rate-limiting (429 Too Many Requests).
-                if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                if (response.StatusCode == (HttpStatusCode)429)
                 {
                     if (cancellationToken.IsCancellationRequested)
                         throw new OperationCanceledException(
@@ -162,7 +163,7 @@ public class Requester : IRequester
                 try
                 {
                     error = await JsonSerializer.DeserializeAsync<ResponseError>(
-                            await response.Content.ReadAsStreamAsync(cancellationToken), _jsonSerializerOptions,
+                            await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions,
                             cancellationToken)
                         .ConfigureAwait(false);
                 }
@@ -220,7 +221,7 @@ public class Requester : IRequester
         newRequest.Method = request.Method;
         newRequest.Version = request.Version;
         foreach (var header in request.Headers) newRequest.Headers.Add(header.Key, header.Value);
-        newRequest.VersionPolicy = request.VersionPolicy;
+        newRequest.Version = request.Version;
         return newRequest;
     }
 }

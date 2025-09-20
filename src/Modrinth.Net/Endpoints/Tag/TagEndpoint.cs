@@ -1,5 +1,6 @@
 ﻿using Modrinth.Http;
 using Modrinth.Models.Tags;
+using System.Net.Http;
 
 namespace Modrinth.Endpoints.Tag;
 
@@ -37,7 +38,7 @@ public class TagEndpoint : Endpoint, ITagEndpoint
     public async Task<GameVersion[]> GetGameVersionsAsync(CancellationToken cancellationToken = default)
     {
         var reqMsg = new HttpRequestMessage();
-        reqMsg.Method = HttpMethod.Get;
+        reqMsg.Method = new HttpMethod("PATCH");
         reqMsg.RequestUri = new Uri(TagPathSegment + '/' + "game_version", UriKind.Relative);
 
         return await Requester.GetJsonAsync<GameVersion[]>(reqMsg, cancellationToken).ConfigureAwait(false);

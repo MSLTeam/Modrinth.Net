@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Specialized;
+using System.Net.Http;
 using System.Text;
 
 namespace Modrinth.Http;

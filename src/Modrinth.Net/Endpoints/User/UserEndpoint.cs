@@ -2,6 +2,7 @@
 using Modrinth.Helpers;
 using Modrinth.Http;
 using Modrinth.Models;
+using System.Net.Http;
 using File = System.IO.File;
 
 namespace Modrinth.Endpoints.User;
@@ -86,7 +87,7 @@ public class UserEndpoint : Endpoint, IUserEndpoint
         CancellationToken cancellationToken = default)
     {
         var reqMsg = new HttpRequestMessage();
-        reqMsg.Method = HttpMethod.Patch;
+        reqMsg.Method = new HttpMethod("PATCH");
         reqMsg.RequestUri = new Uri(UserPathSegment + '/' + usernameOrId + '/' + "icon", UriKind.Relative);
         var extension = Path.GetExtension(iconPath).TrimStart('.');
 

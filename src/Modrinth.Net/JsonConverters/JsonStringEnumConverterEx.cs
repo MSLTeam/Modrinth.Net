@@ -17,7 +17,7 @@ public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum
     public JsonStringEnumConverterEx()
     {
         var type = typeof(TEnum);
-        var values = Enum.GetValues<TEnum>();
+        var values = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
 
         foreach (var value in values)
         {

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using Modrinth.Extensions;
 using Modrinth.Helpers;
@@ -47,7 +48,7 @@ public class TeamEndpoint : Endpoint, ITeamEndpoint
         async Task<TeamMember[][]> FetchTeamBatchAsync(string[] batch, CancellationToken ct)
         {
             var reqMsg = new HttpRequestMessage();
-            reqMsg.Method = HttpMethod.Get;
+            reqMsg.Method = new HttpMethod("PATCH");
             reqMsg.RequestUri = new Uri("teams", UriKind.Relative);
 
             var parameters = new ParameterBuilder
@@ -122,7 +123,7 @@ public class TeamEndpoint : Endpoint, ITeamEndpoint
         int ordering, CancellationToken cancellationToken = default)
     {
         var reqMsg = new HttpRequestMessage();
-        reqMsg.Method = HttpMethod.Patch;
+        reqMsg.Method = new HttpMethod("PATCH");
         reqMsg.RequestUri = new Uri(TeamsPathSegment + '/' + teamId + '/' + "members" + '/' + userId, UriKind.Relative);
 
         var requestBody = new

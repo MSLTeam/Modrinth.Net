@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http;
 using Modrinth.Models.Errors;
 
 namespace Modrinth.Exceptions;

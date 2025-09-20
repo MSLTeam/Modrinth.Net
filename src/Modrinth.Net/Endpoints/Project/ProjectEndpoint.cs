@@ -2,6 +2,7 @@
 using Modrinth.Helpers;
 using Modrinth.Http;
 using Modrinth.Models;
+using System.Net.Http;
 using File = System.IO.File;
 using Index = Modrinth.Models.Enums.Index;
 
@@ -138,7 +139,7 @@ public class ProjectEndpoint : Endpoint, IProjectEndpoint
 
         var reqMsg = new HttpRequestMessage();
 
-        reqMsg.Method = HttpMethod.Patch;
+        reqMsg.Method = new HttpMethod("PATCH");
         reqMsg.RequestUri = new Uri(ProjectPathSegment + "/" + slugOrId + "/icon", UriKind.Relative);
 
         var parameters = new ParameterBuilder
@@ -183,12 +184,14 @@ public class ProjectEndpoint : Endpoint, IProjectEndpoint
 
         parameters.AddToRequest(reqMsg);
 
-        await using var stream = File.OpenRead(imagePath);
-        using var streamContent = new StreamContent(stream);
-
-        reqMsg.Content = streamContent;
-
-        await Requester.SendAsync(reqMsg, cancellationToken).ConfigureAwait(false);
+        using (var stream = File.OpenRead(imagePath))
+        {
+            using (var streamContent = new StreamContent(stream))
+            {
+                reqMsg.Content = streamContent;
+                await Requester.SendAsync(reqMsg, cancellationToken);
+            }
+        }
     }
 
     /// <inheritdoc />
@@ -200,7 +203,7 @@ public class ProjectEndpoint : Endpoint, IProjectEndpoint
 
         var reqMsg = new HttpRequestMessage();
 
-        reqMsg.Method = HttpMethod.Patch;
+        reqMsg.Method = new HttpMethod("PATCH");
         reqMsg.RequestUri = new Uri(ProjectPathSegment + "/" + slugOrId + "/gallery", UriKind.Relative);
 
         var parameters = new ParameterBuilder

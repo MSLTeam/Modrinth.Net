@@ -12,16 +12,16 @@ public class PayoutHistory
     /// </summary>
     /// <returns></returns>
     [JsonPropertyName("all_time")]
-    public string? AllTime { get; init; }
+    public string? AllTime { get; set; }
 
     /// <summary>
     ///     The amount in USD made by the user in the previous 30 days
     /// </summary>
     [JsonPropertyName("last_month")]
-    public string? LastMonth { get; init; }
+    public string? LastMonth { get; set; }
 
     /// <summary>
     ///     A history of all of the user's past transactions
     /// </summary>
-    public UserPayoutHistoryEntry[] Payouts { get; init; } = null!;
+    public UserPayoutHistoryEntry[] Payouts { get; set; } = null!;
 }

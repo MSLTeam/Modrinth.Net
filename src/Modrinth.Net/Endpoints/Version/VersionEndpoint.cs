@@ -2,6 +2,7 @@
 using Modrinth.Helpers;
 using Modrinth.Http;
 using Modrinth.Models.Enums.Version;
+using System.Net.Http;
 
 namespace Modrinth.Endpoints.Version;
 

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using Modrinth.Http;
 using Modrinth.Models.Enums;
@@ -57,8 +58,11 @@ public class VersionFileEndpoint : Endpoint, IVersionFileEndpoint
         HashAlgorithm hashAlgorithm = HashAlgorithm.Sha1, 
         CancellationToken cancellationToken = default)
     {
-        var hashBatches = hashes.Chunk(Config.BatchSize).ToArray();
-        
+        var hashBatches = hashes.Select((value, index) => new { Index = index, Value = value })
+                        .GroupBy(x => x.Index / Config.BatchSize)
+                        .Select(g => g.Select(x => x.Value).ToArray())
+                        .ToArray();
+
         var tasks = hashBatches.Select(async batch =>
         {
             var reqMsg = new HttpRequestMessage
@@ -125,8 +129,11 @@ public class VersionFileEndpoint : Endpoint, IVersionFileEndpoint
         string[] gameVersions, 
         CancellationToken cancellationToken = default)
     {
-        var hashBatches = hashes.Chunk(Config.BatchSize).ToArray();
-        
+        var hashBatches = hashes.Select((value, index) => new { Index = index, Value = value })
+                        .GroupBy(x => x.Index / Config.BatchSize)
+                        .Select(g => g.Select(x => x.Value).ToArray())
+                        .ToArray();
+
         var tasks = hashBatches.Select(async batch =>
         {
             var reqMsg = new HttpRequestMessage

@@ -8,10 +8,13 @@ internal static class BatchingHelper
         int batchSize = 100,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(ids);
-        ArgumentNullException.ThrowIfNull(fetchBatchAsync);
+        if (ids == null) throw new ArgumentNullException(nameof(ids));
+        if (fetchBatchAsync == null) throw new ArgumentNullException(nameof(fetchBatchAsync));
 
-        var idBatches = ids.Chunk(batchSize).ToArray();
+        var idBatches = ids.Select((value, index) => new { Index = index, Value = value })
+                     .GroupBy(x => x.Index / batchSize)
+                     .Select(g => g.Select(x => x.Value).ToArray())
+                     .ToArray();
         var tasks = idBatches.Select(batch => fetchBatchAsync(batch, cancellationToken));
         var results = await Task.WhenAll(tasks).ConfigureAwait(false);
         

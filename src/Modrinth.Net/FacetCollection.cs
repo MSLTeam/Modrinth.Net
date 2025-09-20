@@ -70,10 +70,13 @@ public class FacetCollection : ICollection<Facet[]>
     public override string ToString()
     {
         // Serialize the facets into a Javascript array
-        var serializedFacets = _facets.Select(
-            facets =>
-                $"[{string.Join(',', facets.Select(facet => $"\"{facet}\""))}]");
+        var serializedFacets = _facets.Select(facets =>
+        {
+            // For each facet string, wrap it in double quotes.
+            var quotedFacets = facets.Select(facet => $"\"{facet}\"");
+            return $"[{string.Join(",", quotedFacets)}]";
+        });
 
-        return $"[{string.Join(',', serializedFacets)}]";
+        return $"[{string.Join(",", serializedFacets.ToArray())}]";
     }
 }

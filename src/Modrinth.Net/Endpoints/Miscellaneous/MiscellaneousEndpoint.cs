@@ -1,4 +1,5 @@
 ﻿using Modrinth.Http;
+using System.Net.Http;
 
 namespace Modrinth.Endpoints.Miscellaneous;
 
