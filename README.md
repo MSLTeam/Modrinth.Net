@@ -1,8 +1,8 @@
 # Modrinth.NetFramework
 
 [![GitHub](https://img.shields.io/github/license/Zechiax/Modrinth.Net?style=for-the-badge)](https://github.com/Zechiax/Modrinth.Net)
-[![Nuget](https://img.shields.io/nuget/v/Modrinth.NetFrameWork?style=for-the-badge)](https://www.nuget.org/packages/Modrinth.NetFrameWork)
-[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Modrinth.NetFrameWork?label=NuGet%20Pre-release&style=for-the-badge)](https://www.nuget.org/packages/Modrinth.NetFrameWork)
+[![Nuget](https://img.shields.io/nuget/v/Modrinth.NetFramework?style=for-the-badge)](https://www.nuget.org/packages/Modrinth.NetFrameWork)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Modrinth.NetFramework?label=NuGet%20Pre-release&style=for-the-badge)](https://www.nuget.org/packages/Modrinth.NetFrameWork)
 [![Modrinth API](https://img.shields.io/badge/Modrinth%20API-v2.7.0-449C59?style=for-the-badge)](https://docs.modrinth.com/api/)
 
 C# Wrapper for the [Modrinth API](https://docs.modrinth.com/)
